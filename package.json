@@ -1,0 +1,59 @@
+{
+  "name": "@gristlabs/widget-chart",
+  "description": "Widget for more customizable charts with plotly",
+  "version": "0.1.0",
+  "private": false,
+  "homepage": "./",
+  "grist": [
+    {
+      "name": "Advanced charts",
+      "url": "https://gristlabs.github.io/grist-widget/chart/index.html",
+      "widgetId": "@gristlabs/widget-chart",
+      "published": true,
+      "accessLevel": "full",
+      "description": "Go beyond Grist charts, with support for additional chart types and layout/styling options. Powered by Plotly Studio.",
+      "authors": [
+        {
+          "name": "Grist Labs",
+          "url": "https://github.com/gristlabs"
+        }
+      ],
+      "isGristLabsMaintained": true
+    }
+  ],
+  "dependencies": {
+    "gh-pages": "^6.0.0",
+    "immer": "^10.0.2",
+    "immutable": "^4.3.9",
+    "plotly.js": "^2.26.1",
+    "react": "^18.2.0",
+    "react-chart-editor": "^0.46.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build -m \"Deploy `git rev-parse --verify --short HEAD`\"",
+    "start": "react-scripts start",
+    "build": "react-scripts build && cp package.json build/package.json",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
