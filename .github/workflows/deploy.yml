@@ -24,7 +24,10 @@ jobs:
           cache: npm
 
       - name: Installer les dépendances
-        run: npm ci
+        # npm install (et non npm ci) car le package-lock.json du repo est
+        # désynchronisé de son package.json ; --legacy-peer-deps évite les
+        # conflits de peer dependencies (react-chart-editor / react 18).
+        run: npm install --legacy-peer-deps
 
       - name: Compiler le widget
         run: npm run build
