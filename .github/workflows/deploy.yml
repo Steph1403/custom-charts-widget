@@ -1,0 +1,33 @@
+# Déploiement automatique du widget sur GitHub Pages à chaque modification de main.
+# À placer dans votre fork à l'emplacement : .github/workflows/deploy.yml
+name: Deploy widget to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # permet aussi de lancer le déploiement à la main depuis l'onglet Actions
+
+permissions:
+  contents: write      # nécessaire pour pousser la branche gh-pages
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Compiler le widget
+        run: npm run build
+
+      - name: Publier sur la branche gh-pages
+        run: npx gh-pages -d build -m "Déploiement auto depuis GitHub Actions"
