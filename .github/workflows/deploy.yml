@@ -1,11 +1,12 @@
-# Déploiement automatique du widget sur GitHub Pages à chaque modification de main.
+# Déploiement automatique du widget sur GitHub Pages (branche gh-pages)
+# à chaque modification de main.
 # À placer dans votre fork à l'emplacement : .github/workflows/deploy.yml
 name: Deploy widget to GitHub Pages
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:   # permet aussi de lancer le déploiement à la main depuis l'onglet Actions
+  workflow_dispatch:   # permet aussi de lancer le déploiement à la main (onglet Actions)
 
 permissions:
   contents: write      # nécessaire pour pousser la branche gh-pages
@@ -28,8 +29,7 @@ jobs:
         # désynchronisé de son package.json ; --legacy-peer-deps évite les
         # conflits de peer dependencies (react-chart-editor / react 18).
         # immutable est une peer-dependency de draft-js-utils (via
-        # react-chart-editor) : elle n'est pas installée automatiquement,
-        # d'où le second install explicite indispensable au build.
+        # react-chart-editor) : install explicite indispensable au build.
         run: |
           npm install --legacy-peer-deps
           npm install immutable@^4 --legacy-peer-deps
@@ -37,10 +37,11 @@ jobs:
       - name: Compiler le widget
         run: npm run build
 
-      - name: Configurer l'identité git (requis par gh-pages)
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-
-      - name: Publier sur la branche gh-pages
-        run: npx gh-pages -d build -m "Déploiement auto depuis GitHub Actions"
+      - name: Publier le dossier build/ sur la branche gh-pages
+        # Utilise le GITHUB_TOKEN automatique de GitHub Actions pour
+        # s'authentifier (évite l'erreur "could not read Username").
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
