@@ -27,7 +27,12 @@ jobs:
         # npm install (et non npm ci) car le package-lock.json du repo est
         # désynchronisé de son package.json ; --legacy-peer-deps évite les
         # conflits de peer dependencies (react-chart-editor / react 18).
-        run: npm install --legacy-peer-deps
+        # immutable est une peer-dependency de draft-js-utils (via
+        # react-chart-editor) : elle n'est pas installée automatiquement,
+        # d'où le second install explicite indispensable au build.
+        run: |
+          npm install --legacy-peer-deps
+          npm install immutable@^4 --legacy-peer-deps
 
       - name: Compiler le widget
         run: npm run build
